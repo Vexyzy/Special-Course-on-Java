@@ -96,7 +96,8 @@ public class menu
                                 break;
                             case "2":
                                 System.out.print("Введите название серии: ");
-                                String title = in.next();
+                                String title = in.nextLine();
+                                String support_line = in.nextLine();
                                 System.out.print("Введите количество сочинений в серии: ");
                                 userChoice = in.next();
                                 int quality_of_essays = toInt(userChoice);
@@ -151,8 +152,9 @@ public class menu
                                 break;
                             case "2":
                                 System.out.print("Введите название сборника статей: ");
-                                String title = in.next();
+                                String title = in.nextLine();
                                 System.out.print("Введите количество статей в сборнике: ");
+                                String support_line = in.nextLine();
                                 userChoice = in.next();
                                 int quality_of_essays = toInt(userChoice);
                                 int[] quality_of_pages = new int[quality_of_essays];
@@ -293,6 +295,8 @@ public class menu
                 }
             }
         }
+        System.out.print("Введите любую строку для продолжения: ");
+        String support = in.next();
     }
    
    public static void disintegrateArr()
@@ -317,8 +321,6 @@ public class menu
                 quantityOfEssays++;
             }
         }  
-        System.out.println(quantityOfArticles);
-        System.out.println(quantityOfEssays);
         arr_of_essays = new TextInformationImpl[quantityOfEssays];
         arr_of_article = new TextInformationImpl[quantityOfArticles];
 
@@ -348,6 +350,7 @@ public class menu
                 j++;
             }
         }
+        printDisintegrateArr();
     }
 
     public static void printDisintegrateArr()
@@ -382,6 +385,8 @@ public class menu
             System.out.println(arr_of_article[i].toString());
             System.out.println();
         }
+        System.out.print("Введите любую строку для продолжения: ");
+        String support = in.next();
     }
     public static int toInt(String value)
     {
