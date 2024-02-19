@@ -17,6 +17,10 @@ public class SeriesOfEssays implements TextInformationImpl
     //Конструктор с параметрами
     public SeriesOfEssays(int[] quality_of_page, String title, int quality_of_minor_pages) throws Exception
     {
+        if(quality_of_minor_pages <= 0)
+        {
+            throw new Exception("Количество информационных страниц не может быть <= 0");
+        }
         min_quality_of_page = quality_of_page[0];
         for(int i = 1; i < quality_of_page.length; i++)
         {
@@ -82,6 +86,10 @@ public class SeriesOfEssays implements TextInformationImpl
     }
     public void setQualityOfMinorPages(int quality_of_minor_pages) throws Exception
     {
+        if(quality_of_minor_pages <= 0)
+        {
+            throw new Exception("Количество информационных страниц не может быть <= 0");
+        }
         if(quality_of_minor_pages >= min_quality_of_page)
         {
             throw new Exception("Количество информационных страниц не может быть больше или равно количеству основных");

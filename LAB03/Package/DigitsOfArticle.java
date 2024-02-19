@@ -4,6 +4,7 @@ public class DigitsOfArticle implements TextInformationImpl
 {
     private int[] quality_of_page;
     private String title;
+    private String type = "DigitsOfArticle";
     private int quality_of_minor_pages;
     private int min_quality_of_page;
 
@@ -18,6 +19,10 @@ public class DigitsOfArticle implements TextInformationImpl
     //Конструктор с параметрами
     public DigitsOfArticle(int[] quality_of_page, String title, int quality_of_minor_pages) throws Exception
     {
+        if(quality_of_minor_pages <= 0)
+        {
+            throw new Exception("Количество информационных страниц не может быть <= 0");
+        }
         min_quality_of_page = quality_of_page[0];
         for(int i = 1; i < quality_of_page.length; i++)
         {
@@ -33,6 +38,10 @@ public class DigitsOfArticle implements TextInformationImpl
         this.quality_of_page = quality_of_page;
         this.title = title;
         this.quality_of_minor_pages = quality_of_minor_pages;
+    }
+    public String getType()
+    {
+        return type;
     }
     //Получение количества книг
     public int getQualityOfExamples()
@@ -83,6 +92,10 @@ public class DigitsOfArticle implements TextInformationImpl
     }
     public void setQualityOfMinorPages(int quality_of_minor_pages) throws Exception
     {
+        if(quality_of_minor_pages <= 0)
+        {
+            throw new Exception("Количество информационных страниц не может быть <= 0");
+        }
         if(quality_of_minor_pages >= min_quality_of_page)
         {
             throw new Exception("Количество информационных страниц не может быть больше или равно количеству основных");
