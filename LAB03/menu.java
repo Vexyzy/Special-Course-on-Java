@@ -12,6 +12,8 @@ public class menu
     private static String userChoice;
     private static TextInformationImpl[] arr_of_textInformation = null;
     private static TextInformationImpl[][] arr_bsns_TextInformationImpls = null;
+    private static TextInformationImpl[] arr_of_essays = null;
+    private static TextInformationImpl[] arr_of_article = null;
     public static void main(String[] objects)
     {
         System.out.println("Лабораторная работа №3\nСтудента группы 6201-020302D\n");
@@ -43,8 +45,14 @@ public class menu
                     printArrBsns();
                     break;
                 case "5":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    disintegrateArr();
                     break;
                 case "6":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    printDisintegrateArr();
                     break;
                 default:
                     System.out.println("Такого пункта в меню нет, повторите ввод: ");
@@ -54,6 +62,10 @@ public class menu
     }
     public static void createArr()
     {
+        arr_of_textInformation = null;
+        arr_bsns_TextInformationImpls = null;
+        arr_of_essays = null;
+        arr_of_article = null;
         System.out.print("Введите количество статей и сочинений: ");
         userChoice = in.next();
         int arr_len = toInt(userChoice);
@@ -63,14 +75,14 @@ public class menu
             userChoice = in.next();
             arr_len = toInt(userChoice);
         }
-        boolean isChoosen = false;
+        boolean isChosen = false;
 
         arr_of_textInformation = new TextInformationImpl[arr_len];
         for(int i = 0; i < arr_len; i++)
         {
             String support = String.format("Выберите каким будет %d элемент:\n1. Сочинение\n2. Статья", i+1);
             System.out.println(support);
-            while(!isChoosen)
+            while(!isChosen)
             {
                 userChoice = in.next();
                 switch (userChoice) {
@@ -127,7 +139,7 @@ public class menu
                                 System.out.println("Такого пункта в меню нет. Объект будет добавлен автоматически");
                                 break;
                         }
-                        isChoosen = true;
+                        isChosen = true;
                         break;
                     case "2":
                         System.out.println("Выберите пунтк:\n1. Заполнить автоматески\n2. Заполнить вручную");
@@ -182,14 +194,14 @@ public class menu
                                 System.out.println("Такого пункта в меню нет. Объект будет добавлен автоматически");
                                 break;
                         }
-                        isChoosen = true;
+                        isChosen = true;
                         break;
                     default:
                         System.out.println("Такого пункта в меню нет, повторите ввод: ");
                         break;
                 }
             }
-            isChoosen = false;
+            isChosen = false;
         }
     }
     
@@ -220,7 +232,7 @@ public class menu
             return;
         }
         System.out.println("===\n");
-        for(int i = 0; i < arr_of_textInformation.length; i++)
+        for(int i = 0; i < arr_of_textInformation.length - 1; i++)
         {
             for(int j = 1; j < arr_of_textInformation.length; j++)
             {
@@ -256,15 +268,119 @@ public class menu
             k=0;
             counter = 0;
         }
+        for(int i = 0; i < arr_bsns_TextInformationImpls.length; i++)
+        {
+            if(arr_bsns_TextInformationImpls[i].length == 1)
+            {
+                arr_bsns_TextInformationImpls[i] = null;
+            }
+        }
     }
     public static void printArrBsns()
     {
+        if(arr_bsns_TextInformationImpls == null || arr_bsns_TextInformationImpls.length == 0)
+        {
+            System.out.println("Массива не существует!");
+            return;
+        }
         for(int i = 0; i < arr_bsns_TextInformationImpls.length; i++)
         {
             for(int j = 0; j < arr_bsns_TextInformationImpls[i].length; j++)
             {
-                System.out.println("Элемент" + (i+1) + "-го массива:\n" + arr_bsns_TextInformationImpls[i][j].toString());
+                if(arr_bsns_TextInformationImpls[i] != null)
+                {
+                    System.out.println("Элемент " + (i+1) + "-го массива:\n" + arr_bsns_TextInformationImpls[i][j].toString());
+                }
             }
+        }
+    }
+   
+   public static void disintegrateArr()
+   {
+    if(arr_of_textInformation == null || arr_of_textInformation.length == 0)
+        {
+            System.out.println("Массива не существует!");
+            return;
+        }
+        int quantityOfEssays = 0;
+        int quantityOfArticles = 0;
+   
+
+        for(int i = 0; i < arr_of_textInformation.length; i++)
+        {
+            if(arr_of_textInformation[i] instanceof DigitsOfArticle)
+            {
+                quantityOfArticles++;
+            }
+            else
+            {
+                quantityOfEssays++;
+            }
+        }  
+        System.out.println(quantityOfArticles);
+        System.out.println(quantityOfEssays);
+        arr_of_essays = new TextInformationImpl[quantityOfEssays];
+        arr_of_article = new TextInformationImpl[quantityOfArticles];
+
+        int j = 0;
+        for(int i = 0; i < arr_of_textInformation.length; i++)
+        {
+            if(j == quantityOfEssays)
+            {
+                break;
+            }
+            if(arr_of_textInformation[i] instanceof SeriesOfEssays)
+            {
+                arr_of_essays[j] = arr_of_textInformation[i];
+                j++;
+            }
+        }
+        j = 0;
+        for(int i = 0; i < arr_of_textInformation.length; i++)
+        {
+            if(j == quantityOfArticles)
+            {
+                break;
+            }
+            if(arr_of_textInformation[i] instanceof DigitsOfArticle)
+            {
+                arr_of_article[j] = arr_of_textInformation[i];
+                j++;
+            }
+        }
+    }
+
+    public static void printDisintegrateArr()
+    {
+        if(arr_of_essays == null || arr_of_article == null)
+        {
+            System.out.println("Сначала выполните 5 пункт.");
+            return;
+        }
+        if((arr_of_essays != null && arr_of_article == null) || (arr_of_essays.length != 0 && arr_of_article.length == 0))
+        {
+            System.out.println("Массив статей пуст. Будет выведен исходный массив.");
+            printArr();
+            return;
+        }
+        if((arr_of_article != null && arr_of_essays == null) || (arr_of_article.length != 0 && arr_of_essays.length == 0))
+        {
+            System.out.println("Массив сочинений пуст. Будет выведен исходный массив.");
+            printArr();
+            return;
+        }
+        System.out.println("Массив сочинений: ");
+        for(int i = 0; i < arr_of_essays.length; i++)
+        {
+            System.out.println(arr_of_essays[i].toString());
+            System.out.println();
+        }
+
+        System.out.println("Массив статей: ");
+        for(int i = 0; i < arr_of_article.length; i++)
+        {
+            System.out.println(arr_of_article[i].toString());
+            System.out.println();
         }
     }
     public static int toInt(String value)
