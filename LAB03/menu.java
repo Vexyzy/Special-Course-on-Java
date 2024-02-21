@@ -388,6 +388,7 @@ public class menu
         System.out.print("Введите любую строку для продолжения: ");
         String support = in.next();
     }
+    gdfgdfg
     public static int toInt(String value)
     {
         int result;
