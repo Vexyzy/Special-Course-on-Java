@@ -388,7 +388,6 @@ public class menu
         System.out.print("Введите любую строку для продолжения: ");
         String support = in.next();
     }
-    org.omg.stub;
     public static int toInt(String value)
     {
         int result;
