@@ -56,15 +56,15 @@ public class DigitsOfArticle implements DigitsImpl{
     {
         return listQualPapers[index];
     }
-    public void setLenPaper(int index, int value) throws Exception
+    public void setLenPaper(int index, int value)
     {
         if(value <= 0)
         {
-            throw new Exception("Значение не может быть <= 0");
+            throw new RuntimeException("Значение не может быть <= 0");
         }
         if(value <= qualOfInfoPapers)
         {
-            throw new Exception("Значение не может быть <= " + qualOfInfoPapers);
+            throw new RuntimeException("Значение не может быть <= " + qualOfInfoPapers);
         }
         listQualPapers[index] = value;
     }

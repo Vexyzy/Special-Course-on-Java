@@ -12,7 +12,7 @@ public class DigitsOfSeries implements DigitsImpl {
 
     private String type = "Series";
     
-    public DigitsOfSeries(String tytle, int[] listQualPapers, int qualOfInfoPapers) throws Exception {
+    public DigitsOfSeries(String tytle, int[] listQualPapers, int qualOfInfoPapers) {
 
         int min = listQualPapers[0];
         for(int i = 1; i < listQualPapers.length; i++)
@@ -24,11 +24,11 @@ public class DigitsOfSeries implements DigitsImpl {
         }
         if(qualOfInfoPapers < 0)
         {
-            throw new Exception("Значение информационных страниц не может быть отрицательно");
+            throw new RuntimeException("Значение информационных страниц не может быть отрицательно");
         }
         if(qualOfInfoPapers >= min)
         {
-            throw new Exception("Значение информационных страниц не может быть >= " + min);
+            throw new RuntimeException("Значение информационных страниц не может быть >= " + min);
         }
         this.tytle = tytle;
         this.listQualPapers = listQualPapers;
@@ -59,15 +59,15 @@ public class DigitsOfSeries implements DigitsImpl {
     {
         return listQualPapers[index];
     }
-    public void setLenPaper(int index, int value) throws Exception
+    public void setLenPaper(int index, int value)
     {
         if(value <= 0)
         {
-            throw new Exception("Значение не может быть <= 0");
+            throw new RuntimeException("Значение не может быть <= 0");
         }
         if(value <= qualOfInfoPapers)
         {
-            throw new Exception("Значение не может быть <= " + qualOfInfoPapers);
+            throw new RuntimeException("Значение не может быть <= " + qualOfInfoPapers);
         }
         listQualPapers[index] = value;
     }

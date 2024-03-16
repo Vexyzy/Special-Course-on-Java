@@ -9,12 +9,12 @@ public interface DigitsImpl {
     public void setList(int[] listQualPapers);
 
     public int getLenPaper(int index);
-    public void setLenPaper(int index, int value) throws Exception;
+    public void setLenPaper(int index, int value);
 
     public String getTytle();
     public void setTytle(String tytle);
     public String getType();
-    
+
     public int getQuallityOfMainPages();
 
 }
