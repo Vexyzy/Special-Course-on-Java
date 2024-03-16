@@ -9,15 +9,17 @@ public class DigitsOfSeries implements DigitsImpl {
     private int[] listQualPapers;
     private String tytle;
     private int qualOfInfoPapers;
+
+    private String type = "Series";
     
     public DigitsOfSeries(String tytle, int[] listQualPapers, int qualOfInfoPapers) throws Exception {
 
         int min = listQualPapers[0];
         for(int i = 1; i < listQualPapers.length; i++)
         {
-            if(i < min)
+            if(listQualPapers[i] < min)
             {
-                min = i;
+                min = listQualPapers[i];
             }
         }
         if(qualOfInfoPapers < 0)
@@ -79,6 +81,10 @@ public class DigitsOfSeries implements DigitsImpl {
         this.tytle = tytle;
     }
 
+    public String getType()
+    {
+        return type;
+    }
     public int getQuallityOfMainPages()
     {
         // Метод подсчитывает общее количество страниц без учета информационных
@@ -88,5 +94,20 @@ public class DigitsOfSeries implements DigitsImpl {
             result = result + i - qualOfInfoPapers;
         }
         return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        String line = String.format("Тип элемента: список сочинений\nНазвание: %s\nМассив страниц: [", tytle);
+        for(int i = 0; i < listQualPapers.length - 1; i++)
+        {
+            line += Integer.toString(listQualPapers[i]) + ", ";
+        }
+        line += Integer.toString(listQualPapers[listQualPapers.length - 1]) + "]\n";
+        line += "Количество информационных страниц: " + Integer.toString(qualOfInfoPapers) + '\n';
+        line += "Результат бизнес-метода: " + Integer.toString(getQuallityOfMainPages());
+
+        return line;
     }
 }

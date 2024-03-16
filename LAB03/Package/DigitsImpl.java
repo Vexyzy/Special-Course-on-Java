@@ -13,7 +13,8 @@ public interface DigitsImpl {
 
     public String getTytle();
     public void setTytle(String tytle);
-
+    public String getType();
+    
     public int getQuallityOfMainPages();
 
 }

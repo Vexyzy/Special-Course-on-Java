@@ -1,6 +1,11 @@
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import Package.DigitsImpl;
+import Package.DigitsOfArticle;
 import Package.DigitsOfSeries;
 
 class Main
@@ -10,11 +15,18 @@ class Main
     // System.out.flush();
 
     private static Scanner in = new Scanner(System.in);
+    private static DigitsImpl[] digit;
+    private static DigitsImpl[][] digitsImpls;
+
+    private static DigitsOfArticle[] digitsOfArticles;
+    private static DigitsOfSeries[] digitsOfSeries;
     public static void main(String[] args)
     {
         String userChoice;
         Boolean isDigitsExist = false;
 
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         System.out.println("Лабораторная работа №3 студента группы 6201-020302D Никулина Ивана");
         while(true)
         {
@@ -28,10 +40,20 @@ class Main
                 case "1":
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
+                    digit = createArrDigits();
                     isDigitsExist = true;
-                    createArr();
                     break;
                 case "2":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    if(isDigitsExist)
+                        getMenu();
+                    else
+                    {
+                        System.out.print("\033[H\033[2J");
+                        System.out.flush();
+                        System.out.print("Нельзя перейти в этот пункт, не создав массив. Повторите ввод\n");
+                    }
                     break;
                 default:
                     System.out.print("\033[H\033[2J");
@@ -42,7 +64,7 @@ class Main
         }
     } 
     
-    public static DigitsImpl[] createArr()
+    public static DigitsImpl[] createArrDigits()
     {
         // This method create array of DigitsImpl[] of DigitsOfArticle and DigitsOfSeries
         int len;
@@ -72,10 +94,12 @@ class Main
                 case "1":
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
+                    result[i] = addDigit("Article");
                     break;
                 case "2":
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
+                    result[i] = addDigit("Series");
                     break;
                 default:
                     System.out.print("\033[H\033[2J");
@@ -90,20 +114,244 @@ class Main
         return result;
     }
 
+    public static void printDigit(DigitsImpl[] digit)
+    {
+        for(int i = 0; i < digit.length; i++)
+        {
+            if(digit[i] == null)
+                break;
+            System.out.println("===================================");
+            System.out.println(digit[i].toString());
+            System.out.println("===================================");
+        }
+        
+    }
 
-    public static void addPapers(DigitsImpl digit)
+    public static void printDigitsArr()
+    {
+        for(int i = 0; i < digitsImpls.length; i++)
+        {
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + 
+                                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+            System.out.println("Массив " + (i+1) + ".");
+            printDigit(digitsImpls[i]);
+        }
+    }
+
+    public static DigitsImpl addDigit(String type)
     {
         // Этот метод должен создавать экземляр класса Статьи или Сочинения 
         String tytle;
+        String userChoice;
+        char userChar;
+        int len;
         int[] blockOfPapers;
-        int quaalityOfInfPapers;
-        
+        int qualityOfInfPapers;
+        DigitsImpl digit;
 
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        System.out.println("Заполнить элемент автоматически?\n1. Да\n2. Нет");
+        userChoice = in.next();
+        userChar = userChoice.charAt(0);
+        if(userChar == '1')
+        {
+            if(type == "Series")
+            {
+                digit = new DigitsOfSeries();
+                return digit;
+            }
+            digit = new DigitsOfArticle();
+            return digit;
+        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        System.out.print("Введите название: ");
+        tytle = in.next();
+        tytle = in.nextLine();
+        System.out.print("Сколько элементов вы хотите добавить: ");
+        userChoice = in.next();
+        len = toInt(userChoice);
+        while(len <= 0)
+        {
+            System.out.print("Элементов не может быть 0 или меньше 0\nСколько элементов вы хотите добавить: ");
+            userChoice = in.next();
+            len = toInt(userChoice);
+        }
+
+        blockOfPapers = new int[len];
+        for(int i = 0; i < len; i++)
+        {
+            System.out.print("Введите количество страниц для " + (i+1) + " элемента: ");
+            userChoice = in.next();
+            blockOfPapers[i] = toInt(userChoice);
+            while(blockOfPapers[i] <= 1)
+            {
+                System.out.println("Количество страниц не может быть <= 1 (должна быть минимум 1 информационная страница). Повторите ввод.");
+                System.out.print("Введите количество страниц для " + (i+1) + " элемента: ");
+                userChoice = in.next();
+                blockOfPapers[i] = toInt(userChoice);
+            }
+        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        System.out.print("Введите количество информационных страниц: ");
+        userChoice = in.next();
+        qualityOfInfPapers = toInt(userChoice);
+        while(true)
+        {
+            try
+            {
+                if(type == "Series")
+                {
+                    digit = new DigitsOfSeries(tytle, blockOfPapers, qualityOfInfPapers);
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    System.out.println("Объект список сочинений успешно создан!");
+                    return digit;
+                }
+                digit = new DigitsOfArticle(tytle, blockOfPapers, qualityOfInfPapers);
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println("Объект список статей успешно создан!");
+                return digit;
+            }
+            catch(Exception e)
+            {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println(e.getMessage());
+                System.out.print("Введите количество информационных страниц: ");
+                userChoice = in.next();
+                qualityOfInfPapers = toInt(userChoice);
+            }
+        }
+    }
+
+    public static DigitsImpl[][] getDigitsImplArr()
+    {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        DigitsImpl[][] result;
+        int len;
+
+        for(DigitsImpl i: digit)
+        {
+            if(!list.contains(i.getQuallityOfMainPages()))
+            {
+                list.add(i.getQuallityOfMainPages());
+            }
+        }
+
+        len = list.size();
+        result = new DigitsImpl[len][];
+        for(int i = 0; i < len; i++)
+        {
+            result[i] = new DigitsImpl[digit.length];
+            int k = 0;
+            for(int j = 0; j < digit.length; j++)
+            {
+                if(digit[j].getQuallityOfMainPages() == list.get(i))
+                {
+                    result[i][k] = digit[j];
+                    k++;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static void getMenu()
+    {
+        String userChoice;
+        while(true)
+        {
+            System.out.print("Выберите пункт меню:\n"
+                            +"0. Выход\n" 
+                            +"1. Вывести массив\n"
+                            +"2. Найти в массиве объекты, бизнес-метод которых возвращают одинаковый результат, поместить такие объекты в другие массивы и вывести массив\n"
+                            +"3. Разбить исходный массив на два массива, в которых будут храниться однотипные элементы\n"
+                            +"Ваш выбор: "
+                            );
+            userChoice = in.next();
+            switch (userChoice) {
+                case "0":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    return;
+                case "1":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    printDigit(digit);
+                    break;
+                case "2":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    digitsImpls = getDigitsImplArr();
+                    printDigitsArr();
+                    break;
+                case "3":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    toShareDigits();
+                    System.out.println("===================================");
+                    System.out.println("/////////Массив статей/////////");
+                    System.out.println("===================================");
+                    printDigit(digitsOfArticles);
+                    System.out.println("===================================");
+                    System.out.println("/////////Массив сочинений/////////");
+                    System.out.println("===================================");
+                    printDigit(digitsOfSeries);
+                    break;
+                default:
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    System.out.print("Такого пункта нет. Повторите ввод\nВыбор: ");
+                    break;
+            }
+        }
+    }
+
+    private static void toShareDigits()
+    {
+        DigitsOfArticle objArticle = new DigitsOfArticle();
+        int lenArcticle = 0;
+        int lenSeries = 0;
+        for(DigitsImpl i : digit)
+        {
+            if(i.getClass() == objArticle.getClass())
+            {
+                lenArcticle++;
+            }
+            else
+            {
+                lenSeries++;
+            }
+        }
+
+        digitsOfArticles = new DigitsOfArticle[lenArcticle];
+        digitsOfSeries = new DigitsOfSeries[lenSeries];
+        int j = 0;
+        int k = 0;
+        for(DigitsImpl i : digit)
+        {
+            if(i.getClass() == objArticle.getClass())
+            {
+                digitsOfArticles[j] = (DigitsOfArticle) i;
+                j++;
+            }
+            else
+            {
+                digitsOfSeries[k] = (DigitsOfSeries) i;
+                k++;
+            }
+        }
     }
 
     public static int toInt(String userString)
     {
         int result;
+        
         while(true)
         {
             try
@@ -121,3 +369,4 @@ class Main
         }
     }
 }
+
