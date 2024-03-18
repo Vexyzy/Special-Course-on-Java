@@ -1,15 +1,18 @@
-import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
+import Package.DigitsArrWR;
 import Package.DigitsImpl;
 import Package.DigitsOfArticle;
 import Package.DigitsOfSeries;
@@ -36,7 +39,12 @@ class Main
         System.out.println("Лабораторная работа №3 студента группы 6201-020302D Никулина Ивана");
         while(true)
         {
-            System.out.print("Выберите пункт меню:\n0. Выход\n1. Создать массив объектов типа Digits\n2. Работа с массивом объектов типа Digits\nВыбор: ");
+            System.out.print("Выберите пункт меню:"
+                            +"\n0. Выход"
+                            +"\n1. Создать массив объектов типа Digits"
+                            +"\n2. Работа с массивом объектов типа Digits"
+                            +"\n3. Десериализовать массив"
+                            +"\nВыбор: ");
             userChoice = in.next();
             switch (userChoice) {
                 case "0":
@@ -47,37 +55,6 @@ class Main
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
                     digit = createArrDigits();
-
-                    /////BYTE WRITER
-                    OutputStream byteWriter;
-                    try
-                    {
-                        byteWriter = new FileOutputStream("byteFile.txt");
-                        for(DigitsImpl i : digit)
-                        {
-                            i.byteWriter(byteWriter);
-                        }
-                    }
-                    catch(IOException exception)
-                    {
-                        System.out.println(exception.getMessage());
-                    }
-                    ////FILE WRITER
-                    Writer fileWriter;
-                    try
-                    {
-                        fileWriter = new FileWriter("symbolFile.txt");
-                        for(DigitsImpl i : digit)
-                        {
-                            i.symbolWriter(fileWriter);
-                        }
-                        fileWriter.flush();
-                        fileWriter.close();
-                    }   
-                    catch(IOException exception)
-                    {
-                        System.out.println(exception.getMessage());
-                    }
                     isDigitsExist = true;
                     break;
                 case "2":
@@ -90,6 +67,15 @@ class Main
                         System.out.print("\033[H\033[2J");
                         System.out.flush();
                         System.out.print("Нельзя перейти в этот пункт, не создав массив. Повторите ввод\n");
+                    }
+                    break;
+                case "3":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    digit = deserialize();
+                    if(digit != null)
+                    {
+                        isDigitsExist = true;
                     }
                     break;
                 default:
@@ -309,6 +295,11 @@ class Main
                             +"1. Вывести массив\n"
                             +"2. Найти в массиве объекты, бизнес-метод которых возвращают одинаковый результат, поместить такие объекты в другие массивы и вывести массив\n"
                             +"3. Разбить исходный массив на два массива, в которых будут храниться однотипные элементы\n"
+                            +"4. Записать исходный массив в байтовый поток (запись в byteFile.txt)\n"
+                            +"5. Чтение из byteFile.txt\n"
+                            +"6. Записать исходный массив в символьный поток (запись в symbolFile.txt)\n"
+                            +"7. Чтение из symbolFile.txt\n"
+                            +"8. Сериализовать массив\n" 
                             +"Ваш выбор: "
                             );
             userChoice = in.next();
@@ -340,6 +331,31 @@ class Main
                     System.out.println("/////////Массив сочинений/////////");
                     System.out.println("===================================");
                     printDigit(digitsOfSeries);
+                    break;
+                case "4":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    writeBytes();
+                    break;
+                case "5":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    readBytes();
+                    break;
+                case "6":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    writeSymbols();
+                    break;
+                case "7":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    readSymbols();
+                    break;
+                case "8":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    serialize();
                     break;
                 default:
                     System.out.print("\033[H\033[2J");
@@ -383,6 +399,99 @@ class Main
                 digitsOfSeries[k] = (DigitsOfSeries) i;
                 k++;
             }
+        }
+    }
+
+    public static void writeBytes()
+    {
+        OutputStream byteWriter;
+        try
+        {
+            byteWriter = new FileOutputStream("byteFile.txt");
+            DigitsArrWR.byteWriter(digit, byteWriter);
+            System.out.println("Файл успешно записан!");
+        }
+        catch(IOException exception)
+        {
+            System.out.println("Output error");
+        }
+    }
+
+    public static void readBytes()
+    {
+        try(FileInputStream stream = new FileInputStream("byteFile.txt"))
+        {
+            System.out.println(DigitsArrWR.byteReader(stream));
+        }
+        catch(IOException exception)
+        {
+            System.out.println("Файл не существует. Создайте файл, перед тем, как из него что-либо прочитать.");
+        }   
+    }
+
+    public static void writeSymbols()
+    {
+        Writer fileWriter;
+        try
+        {
+            fileWriter = new FileWriter("symbolFile.txt");
+            DigitsArrWR.symbolWriter(digit, fileWriter);
+            fileWriter.flush();
+            fileWriter.close();
+            System.out.println("Файл успешно записан!");
+        }   
+        catch(IOException exception)
+        {
+            System.out.println("Output error");
+        }
+    }
+
+    public static void readSymbols()
+    {
+        try
+        {
+            FileReader fileReader = new FileReader("symbolFile.txt");
+            System.out.println(DigitsArrWR.symbolReader(fileReader));
+        }
+        catch(IOException exception)
+        {
+            System.out.println("Input error");
+        }
+
+    }
+
+    public static void serialize()
+    {
+        try
+        {
+            FileOutputStream fileOutputStream = new FileOutputStream("save.txt");
+            
+            ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
+            DigitsArrWR.serialze(digit, outputStream);
+            fileOutputStream.close();
+        }
+        catch(IOException exception)
+        {
+            System.out.println("Serialize error");
+        }
+    }
+
+    public static DigitsImpl[] deserialize()
+    {
+        try
+        {   
+            FileInputStream fileInputStream = new FileInputStream("save.txt");
+            ObjectInputStream objectOutputStream = new ObjectInputStream(fileInputStream);
+
+            DigitsImpl[] result = DigitsArrWR.deserialize(objectOutputStream);
+
+            fileInputStream.close();
+            return result;
+        }  
+        catch(IOException exception)
+        {
+            System.out.println("Deserialize exception");
+            return null;
         }
     }
 

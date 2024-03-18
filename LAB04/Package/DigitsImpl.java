@@ -6,7 +6,7 @@ import java.io.Writer;
 /**
  * DigitsImpl
  */
-public interface DigitsImpl {
+public interface DigitsImpl{
 
     public int[] getList();
     public void setList(int[] listQualPapers);

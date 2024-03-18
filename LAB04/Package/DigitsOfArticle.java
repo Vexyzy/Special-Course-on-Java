@@ -1,12 +1,11 @@
 package Package;
 
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.io.Writer;
 
-public class DigitsOfArticle implements DigitsImpl{
+public class DigitsOfArticle implements DigitsImpl, Serializable{
     
     private int[] listQualPapers;
     private String tytle;
@@ -109,6 +108,11 @@ public class DigitsOfArticle implements DigitsImpl{
             {
                 out.write(eachByte);
             }
+            for(int i = 0; i < 10; i++)
+            {
+                out.write('=');
+            }
+            out.write('\n');
         }
         catch(IOException exception)
         {
@@ -127,6 +131,11 @@ public class DigitsOfArticle implements DigitsImpl{
             {
                 out.write(eachChar);
             }
+            for(int i = 0; i < 10; i++)
+            {
+                out.write('=');
+            }
+            out.write('\n');
         }
         catch(IOException exception)
         {
