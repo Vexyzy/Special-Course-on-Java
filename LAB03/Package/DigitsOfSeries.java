@@ -10,7 +10,7 @@ public class DigitsOfSeries implements DigitsImpl {
     private String tytle;
     private int qualOfInfoPapers;
 
-    private String type = "Series";
+    private String type = "список сочинений";
     
     public DigitsOfSeries(String tytle, int[] listQualPapers, int qualOfInfoPapers) {
 
@@ -99,8 +99,8 @@ public class DigitsOfSeries implements DigitsImpl {
     @Override
     public String toString()
     {
-        String line = String.format("Тип элемента: список сочинений\nНазвание: %s\nМассив страниц: [", tytle);
-        for(int i = 0; i < listQualPapers.length - 1; i++)
+        String line = String.format("Тип элемента: %s\nНазвание: %s\nМассив страниц: [", type, tytle);
+        for(int i = 0; i < listQualPapers.length - 1; i++) 
         {
             line += Integer.toString(listQualPapers[i]) + ", ";
         }

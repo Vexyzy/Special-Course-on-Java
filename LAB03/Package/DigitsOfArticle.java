@@ -6,7 +6,7 @@ public class DigitsOfArticle implements DigitsImpl{
     private String tytle;
     private int qualOfInfoPapers;
 
-    private String type = "Arcticle";
+    private String type = "список статей";
     
     public DigitsOfArticle(String tytle, int[] listQualPapers, int qualOfInfoPapers) throws Exception {
 
@@ -96,7 +96,7 @@ public class DigitsOfArticle implements DigitsImpl{
     @Override
     public String toString()
     {
-        String line = String.format("Тип элемента: список статей\nНазвание: %s\nМассив страниц: [", tytle);
+        String line = String.format("Тип элемента: %s\nНазвание: %s\nМассив страниц: [", type, tytle);
         for(int i = 0; i < listQualPapers.length - 1; i++)
         {
             line += Integer.toString(listQualPapers[i]) + ", ";

@@ -17,4 +17,6 @@ public interface DigitsImpl {
 
     public int getQuallityOfMainPages();
 
+    @Override
+    public String toString();
 }
