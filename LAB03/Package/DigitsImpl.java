@@ -20,9 +20,6 @@ public interface DigitsImpl {
 
     public int getQuallityOfMainPages();
     
-    public void byteWriter(OutputStream out);
-    public void symbolWriter(Writer out);
-    
     // public void simbolWriter(Writer out);
     @Override
     public String toString();

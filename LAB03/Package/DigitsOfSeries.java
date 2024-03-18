@@ -96,42 +96,6 @@ public class DigitsOfSeries implements DigitsImpl {
         return result;
     }
 
-    public void byteWriter(OutputStream out)
-    {
-        String toSaveLine = toString();
-
-        byte[] bytes = toSaveLine.getBytes();
-
-        try
-        {
-            for(byte eachByte: bytes)
-            {
-                out.write(eachByte);
-            }
-        }
-        catch(IOException exception)
-        {
-            System.out.println("Output error");
-        }
-    }
-
-    public void symbolWriter(Writer out)
-    {
-        String toSaveLine = toString();
-        char[] chars = new char[toSaveLine.length()];
-        toSaveLine.getChars(0, chars.length, chars, 0);
-        try
-        {
-            for(char eachChar: chars)
-            {
-                out.write(eachChar);
-            }
-        }
-        catch(IOException exception)
-        {
-            System.out.println("Output error");
-        }
-    }
     @Override
     public String toString()
     {

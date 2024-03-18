@@ -47,37 +47,6 @@ class Main
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
                     digit = createArrDigits();
-
-                    /////BYTE WRITER
-                    OutputStream byteWriter;
-                    try
-                    {
-                        byteWriter = new FileOutputStream("byteFile.txt");
-                        for(DigitsImpl i : digit)
-                        {
-                            i.byteWriter(byteWriter);
-                        }
-                    }
-                    catch(IOException exception)
-                    {
-                        System.out.println(exception.getMessage());
-                    }
-                    ////FILE WRITER
-                    Writer fileWriter;
-                    try
-                    {
-                        fileWriter = new FileWriter("symbolFile.txt");
-                        for(DigitsImpl i : digit)
-                        {
-                            i.symbolWriter(fileWriter);
-                        }
-                        fileWriter.flush();
-                        fileWriter.close();
-                    }   
-                    catch(IOException exception)
-                    {
-                        System.out.println(exception.getMessage());
-                    }
                     isDigitsExist = true;
                     break;
                 case "2":
