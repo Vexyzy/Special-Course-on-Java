@@ -1,5 +1,8 @@
 package Package;
 
+import java.io.OutputStream;
+import java.io.Writer;
+
 /**
  * DigitsImpl
  */
@@ -16,7 +19,11 @@ public interface DigitsImpl {
     public String getType();
 
     public int getQuallityOfMainPages();
-
+    
+    public void byteWriter(OutputStream out);
+    public void symbolWriter(Writer out);
+    
+    // public void simbolWriter(Writer out);
     @Override
     public String toString();
 }

@@ -1,12 +1,18 @@
 package Package;
 
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
+
 public class DigitsOfArticle implements DigitsImpl{
     
     private int[] listQualPapers;
     private String tytle;
     private int qualOfInfoPapers;
 
-    private String type = "список статей";
+    private String type = "Digits of arcticle";
     
     public DigitsOfArticle(String tytle, int[] listQualPapers, int qualOfInfoPapers) throws Exception {
 
@@ -93,17 +99,52 @@ public class DigitsOfArticle implements DigitsImpl{
         return result;
     } 
 
+    public void byteWriter(OutputStream out)
+    {
+        String toSaveLine = toString();
+        byte[] bytes = toSaveLine.getBytes();
+        try
+        {
+            for(byte eachByte: bytes)
+            {
+                out.write(eachByte);
+            }
+        }
+        catch(IOException exception)
+        {
+            System.out.println("Output error");
+        }
+    }
+
+    public void symbolWriter(Writer out)
+    {
+        String toSaveLine = toString();
+        char[] chars = new char[toSaveLine.length()];
+        toSaveLine.getChars(0, chars.length, chars, 0);
+        try
+        {
+            for(char eachChar: chars)
+            {
+                out.write(eachChar);
+            }
+        }
+        catch(IOException exception)
+        {
+            System.out.println("Output error");
+        }
+    }
     @Override
     public String toString()
     {
-        String line = String.format("Тип элемента: %s\nНазвание: %s\nМассив страниц: [", type, tytle);
-        for(int i = 0; i < listQualPapers.length - 1; i++)
+        String line = String.format("Type of element: %s\nTytle: %s\nArray of papers: [", type, tytle);
+        for(int i = 0; i < listQualPapers.length - 1; i++) 
         {
             line += Integer.toString(listQualPapers[i]) + ", ";
         }
         line += Integer.toString(listQualPapers[listQualPapers.length - 1]) + "]\n";
-        line += "Количество информационных страниц: " + Integer.toString(qualOfInfoPapers) + '\n';
-        line += "Результат бизнес-метода: " + Integer.toString(getQuallityOfMainPages());
+        line += "Quallity of information papers: " + Integer.toString(qualOfInfoPapers) + '\n';
+        line += "Result buiseness method: " + Integer.toString(getQuallityOfMainPages());
+        line += '\n';
 
         return line;
     }

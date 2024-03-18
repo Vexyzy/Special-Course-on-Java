@@ -1,3 +1,9 @@
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -41,6 +47,37 @@ class Main
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
                     digit = createArrDigits();
+
+                    /////BYTE WRITER
+                    OutputStream byteWriter;
+                    try
+                    {
+                        byteWriter = new FileOutputStream("byteFile.txt");
+                        for(DigitsImpl i : digit)
+                        {
+                            i.byteWriter(byteWriter);
+                        }
+                    }
+                    catch(IOException exception)
+                    {
+                        System.out.println(exception.getMessage());
+                    }
+                    ////FILE WRITER
+                    Writer fileWriter;
+                    try
+                    {
+                        fileWriter = new FileWriter("symbolFile.txt");
+                        for(DigitsImpl i : digit)
+                        {
+                            i.symbolWriter(fileWriter);
+                        }
+                        fileWriter.flush();
+                        fileWriter.close();
+                    }   
+                    catch(IOException exception)
+                    {
+                        System.out.println(exception.getMessage());
+                    }
                     isDigitsExist = true;
                     break;
                 case "2":
@@ -94,12 +131,12 @@ class Main
                 case "1":
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
-                    result[i] = addDigit("Article");
+                    result[i] = addDigit("Series");
                     break;
                 case "2":
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
-                    result[i] = addDigit("Series");
+                    result[i] = addDigit("Article");
                     break;
                 default:
                     System.out.print("\033[H\033[2J");
@@ -148,6 +185,7 @@ class Main
         int[] blockOfPapers;
         int qualityOfInfPapers;
         DigitsImpl digit;
+        String support;
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -168,7 +206,7 @@ class Main
         System.out.flush();
         System.out.print("Введите название: ");
         tytle = in.next();
-        tytle = in.nextLine();
+        support = in.nextLine();
         System.out.print("Сколько элементов вы хотите добавить: ");
         userChoice = in.next();
         len = toInt(userChoice);

@@ -1,0 +1,10 @@
+Type of element: Digits of series
+Tytle: NO_TYTLE
+Array of papers: [10, 10, 10, 10, 10]
+Quallity of information papers: 2
+Result buiseness method: 40
+Type of element: Digits of arcticle
+Tytle: NO_TYTLE
+Array of papers: [10, 10, 10, 10, 10]
+Quallity of information papers: 2
+Result buiseness method: 40
