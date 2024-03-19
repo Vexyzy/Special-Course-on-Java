@@ -1,7 +1,6 @@
 package Package;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.Writer;
 
@@ -23,9 +22,9 @@ public class DigitsOfSeries implements DigitsImpl, Serializable{
                 min = listQualPapers[i];
             }
         }
-        if(qualOfInfoPapers < 0)
+        if(qualOfInfoPapers <= 0)
         {
-            throw new RuntimeException("Значение информационных страниц не может быть отрицательно");
+            throw new RuntimeException("Значение информационных страниц не может быть отрицательно или равняться 0");
         }
         if(qualOfInfoPapers >= min)
         {
@@ -51,15 +50,27 @@ public class DigitsOfSeries implements DigitsImpl, Serializable{
     {
         return listQualPapers;
     }
+
+    public int getLen()
+    {
+        return listQualPapers.length;
+    }
+
     public void setList(int[] listQualPapers)
     {
         this.listQualPapers = listQualPapers;
+    }
+
+    public int getQuallityOfInfPapers()
+    {
+        return qualOfInfoPapers;
     }
 
     public int getLenPaper(int index)
     {
         return listQualPapers[index];
     }
+
     public void setLenPaper(int index, int value)
     {
         if(value <= 0)
@@ -77,6 +88,7 @@ public class DigitsOfSeries implements DigitsImpl, Serializable{
     {
         return this.tytle;
     }
+
     public void setTytle(String tytle)
     {
         this.tytle = tytle;
@@ -86,6 +98,7 @@ public class DigitsOfSeries implements DigitsImpl, Serializable{
     {
         return type;
     }
+
     public int getQuallityOfMainPages()
     {
         // Метод подсчитывает общее количество страниц без учета информационных
@@ -111,9 +124,9 @@ public class DigitsOfSeries implements DigitsImpl, Serializable{
             }
             for(int i = 0; i < 10; i++)
             {
-                out.write('=');
+                out.write((byte)'=');
             }
-            out.write('\n');
+            out.write((byte)'\n');
         }
         catch(IOException exception)
         {
@@ -143,6 +156,7 @@ public class DigitsOfSeries implements DigitsImpl, Serializable{
             System.out.println("Output error");
         }
     }
+    
     @Override
     public String toString()
     {

@@ -13,7 +13,7 @@ public class DigitsOfArticle implements DigitsImpl, Serializable{
 
     private String type = "Digits of arcticle";
     
-    public DigitsOfArticle(String tytle, int[] listQualPapers, int qualOfInfoPapers) throws Exception {
+    public DigitsOfArticle(String tytle, int[] listQualPapers, int qualOfInfoPapers) {
 
         int min = listQualPapers[0];
         for(int i = 1; i < listQualPapers.length; i++)
@@ -23,13 +23,13 @@ public class DigitsOfArticle implements DigitsImpl, Serializable{
                 min = listQualPapers[i];
             }
         }
-        if(qualOfInfoPapers < 0)
+        if(qualOfInfoPapers <= 0)
         {
-            throw new Exception("Значение информационных страниц не может быть отрицательно");
+            throw new RuntimeException("Значение информационных страниц не может быть отрицательно или равняться 0");
         }
         if(qualOfInfoPapers >= min)
         {
-            throw new Exception("Значение информационных страниц не может быть >= " + min);
+            throw new RuntimeException("Значение информационных страниц не может быть >= " + min);
         }
         this.tytle = tytle;
         this.listQualPapers = listQualPapers;
@@ -47,20 +47,26 @@ public class DigitsOfArticle implements DigitsImpl, Serializable{
         this.qualOfInfoPapers = 2; 
     }
 
-
     public int[] getList()
     {
         return listQualPapers;
     }
+    
     public void setList(int[] listQualPapers)
     {
         this.listQualPapers = listQualPapers;
     }
-
+    
+    public int getLen()
+    {
+        return listQualPapers.length;
+    }
+    
     public int getLenPaper(int index)
     {
         return listQualPapers[index];
     }
+   
     public void setLenPaper(int index, int value)
     {
         if(value <= 0)
@@ -78,15 +84,22 @@ public class DigitsOfArticle implements DigitsImpl, Serializable{
     {
         return this.tytle;
     }
+    
     public void setTytle(String tytle)
     {
         this.tytle = tytle;
     }
+    
     public String getType()
     {
         return type;
     }
-
+    
+    public int getQuallityOfInfPapers()
+    {
+        return qualOfInfoPapers;
+    }
+    
     public int getQuallityOfMainPages()
     {
         // Метод подсчитывает общее количество страниц без учета информационных
@@ -110,9 +123,9 @@ public class DigitsOfArticle implements DigitsImpl, Serializable{
             }
             for(int i = 0; i < 10; i++)
             {
-                out.write('=');
+                out.write((byte)'=');
             }
-            out.write('\n');
+            out.write((byte)'\n');
         }
         catch(IOException exception)
         {
@@ -142,6 +155,7 @@ public class DigitsOfArticle implements DigitsImpl, Serializable{
             System.out.println("Output error");
         }
     }
+    
     @Override
     public String toString()
     {

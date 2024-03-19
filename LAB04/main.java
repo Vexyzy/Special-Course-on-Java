@@ -1,5 +1,5 @@
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -66,7 +65,7 @@ class Main
                     {
                         System.out.print("\033[H\033[2J");
                         System.out.flush();
-                        System.out.print("Нельзя перейти в этот пункт, не создав массив. Повторите ввод\n");
+                        System.out.print("Нельзя перейти в этот пункт, не создав массив или не десериализовав его. Повторите ввод\n");
                     }
                     break;
                 case "3":
@@ -299,7 +298,9 @@ class Main
                             +"5. Чтение из byteFile.txt\n"
                             +"6. Записать исходный массив в символьный поток (запись в symbolFile.txt)\n"
                             +"7. Чтение из symbolFile.txt\n"
-                            +"8. Сериализовать массив\n" 
+                            +"8. Сериализовать массив\n"
+                            +"9. Форматировать массив\n" 
+                            +"10. Форматированный вывод массива\n" 
                             +"Ваш выбор: "
                             );
             userChoice = in.next();
@@ -356,6 +357,16 @@ class Main
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
                     serialize();
+                    break;
+                case "9":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    printStream();
+                    break;
+                case "10":
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    readStream();
                     break;
                 default:
                     System.out.print("\033[H\033[2J");
@@ -491,8 +502,41 @@ class Main
         catch(IOException exception)
         {
             System.out.println("Deserialize exception");
-            return null;
+            return digit;
         }
+    }
+
+    public static void printStream()
+    {
+        Writer fileWriter;
+        try
+        {
+            fileWriter = new FileWriter("printStream.txt");
+            DigitsArrWR.printStream(digit, fileWriter);
+            fileWriter.flush();
+            fileWriter.close();
+            System.out.println("Файл успешно записан!");
+        }   
+        catch(IOException exception)
+        {
+            System.out.println("Output error");
+        }
+    }
+
+    public static void readStream()
+    {
+        try
+        {
+            File doc = new File("printStream.txt");
+            Scanner obj = new Scanner(doc);
+            DigitsImpl[] newDigit = DigitsArrWR.readFormat(obj);
+            printDigit(newDigit);
+        }
+        catch(Exception exception)
+        {
+            System.out.println("Файл не существует. Создайте файл перед тем как считывать его");
+        }
+        
     }
 
     public static int toInt(String userString)
