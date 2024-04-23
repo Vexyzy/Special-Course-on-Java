@@ -99,6 +99,32 @@ public class DigitsOfArticle implements DigitsImpl{
         return result;
     } 
 
+    public boolean equals(Object o){
+        if(o != null && o.getClass() == this.getClass())
+        {
+            DigitsOfArticle digitsOfArticle = (DigitsOfArticle)o;
+            if(this.getTytle() == digitsOfArticle.getTytle()
+            && this.getType() == digitsOfArticle.getType()
+            && this.getList().length == digitsOfArticle.getList().length
+            && this.getQuallityOfMainPages() == digitsOfArticle.getQuallityOfMainPages())
+            {
+                for(int i = 0; i < this.getList().length; i++){
+                    if(this.getLenPaper(i) != digitsOfArticle.getLenPaper(i))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int hashCode()
+    {
+        return getList().hashCode() + getType().hashCode() + super.hashCode();
+    }
+
     @Override
     public String toString()
     {
