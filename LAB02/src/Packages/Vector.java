@@ -1,27 +1,34 @@
 package Packages;
 
 public class Vector {
+
     private double[] vector;
+    
     public Vector(int vector_length)
     {
         vector = new double[vector_length];
     }
+
     public double[] getVector()
     {
         return vector;
     }
+
     public double getElement(int index)
     {
         return vector[index];
     }
+
     public void setElement(int index, double value)
     {
         vector[index] = value;
     }
+
     public int getLength()
     {
         return vector.length;
     }
+
     public double[] min_and_max_values()
     {
         double min = vector[0];
@@ -68,8 +75,11 @@ public class Vector {
         {
             norm += Math.pow(vector[i], 2);
         }
+        
+        norm = Math.sqrt(norm);
         return norm;
     }
+    
     public void mulVector(double number)
     {
         for(int i = 0; i < vector.length; i++)

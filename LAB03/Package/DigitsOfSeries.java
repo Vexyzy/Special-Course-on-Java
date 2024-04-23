@@ -1,20 +1,20 @@
 package Package;
-
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.Writer;
 
-public class DigitsOfArticle implements DigitsImpl{
+public class DigitsOfSeries implements DigitsImpl {
     
     private int[] listQualPapers;
     private String tytle;
     private int qualOfInfoPapers;
 
-    private String type = "Digits of arcticle";
     
-    public DigitsOfArticle(String tytle, int[] listQualPapers, int qualOfInfoPapers) throws Exception {
+
+    private String type = "Digits of series";
+    
+    public DigitsOfSeries(String tytle, int[] listQualPapers, int qualOfInfoPapers) {
 
         int min = listQualPapers[0];
         for(int i = 1; i < listQualPapers.length; i++)
@@ -26,18 +26,18 @@ public class DigitsOfArticle implements DigitsImpl{
         }
         if(qualOfInfoPapers < 0)
         {
-            throw new Exception("Значение информационных страниц не может быть отрицательно");
+            throw new RuntimeException("Значение информационных страниц не может быть отрицательно");
         }
         if(qualOfInfoPapers >= min)
         {
-            throw new Exception("Значение информационных страниц не может быть >= " + min);
+            throw new RuntimeException("Значение информационных страниц не может быть >= " + min);
         }
         this.tytle = tytle;
         this.listQualPapers = listQualPapers;
         this.qualOfInfoPapers = qualOfInfoPapers;
     }
 
-    public DigitsOfArticle()
+    public DigitsOfSeries()
     {
         this.tytle = "NO_TYTLE";
         this.listQualPapers = new int[5];
@@ -47,7 +47,6 @@ public class DigitsOfArticle implements DigitsImpl{
         }
         this.qualOfInfoPapers = 2; 
     }
-
 
     public int[] getList()
     {
@@ -83,11 +82,11 @@ public class DigitsOfArticle implements DigitsImpl{
     {
         this.tytle = tytle;
     }
+
     public String getType()
     {
         return type;
     }
-
     public int getQuallityOfMainPages()
     {
         // Метод подсчитывает общее количество страниц без учета информационных
@@ -97,19 +96,19 @@ public class DigitsOfArticle implements DigitsImpl{
             result = result + i - qualOfInfoPapers;
         }
         return result;
-    } 
+    }
 
     public boolean equals(Object o){
         if(o != null && o.getClass() == this.getClass())
         {
-            DigitsOfArticle digitsOfArticle = (DigitsOfArticle)o;
-            if(this.getTytle() == digitsOfArticle.getTytle()
-            && this.getType() == digitsOfArticle.getType()
-            && this.getList().length == digitsOfArticle.getList().length
-            && this.getQuallityOfMainPages() == digitsOfArticle.getQuallityOfMainPages())
+            DigitsOfSeries digit = (DigitsOfSeries)o;
+            if(this.getTytle() == digit.getTytle()
+            && this.getType() == digit.getType()
+            && this.getList().length == digit.getList().length
+            && this.getQuallityOfMainPages() == digit.getQuallityOfMainPages())
             {
                 for(int i = 0; i < this.getList().length; i++){
-                    if(this.getLenPaper(i) != digitsOfArticle.getLenPaper(i))
+                    if(this.getLenPaper(i) != digit.getLenPaper(i))
                     {
                         return false;
                     }

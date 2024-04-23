@@ -1,12 +1,11 @@
 package Package;
 
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.io.Writer;
 
-public class DigitsOfArticle implements DigitsImpl{
+public class DigitsOfArticle implements DigitsImpl, Serializable{
     
     private int[] listQualPapers;
     private String tytle;
@@ -14,7 +13,7 @@ public class DigitsOfArticle implements DigitsImpl{
 
     private String type = "Digits of arcticle";
     
-    public DigitsOfArticle(String tytle, int[] listQualPapers, int qualOfInfoPapers) throws Exception {
+    public DigitsOfArticle(String tytle, int[] listQualPapers, int qualOfInfoPapers) {
 
         int min = listQualPapers[0];
         for(int i = 1; i < listQualPapers.length; i++)
@@ -24,13 +23,13 @@ public class DigitsOfArticle implements DigitsImpl{
                 min = listQualPapers[i];
             }
         }
-        if(qualOfInfoPapers < 0)
+        if(qualOfInfoPapers <= 0)
         {
-            throw new Exception("Значение информационных страниц не может быть отрицательно");
+            throw new RuntimeException("Значение информационных страниц не может быть отрицательно или равняться 0");
         }
         if(qualOfInfoPapers >= min)
         {
-            throw new Exception("Значение информационных страниц не может быть >= " + min);
+            throw new RuntimeException("Значение информационных страниц не может быть >= " + min);
         }
         this.tytle = tytle;
         this.listQualPapers = listQualPapers;
@@ -41,37 +40,43 @@ public class DigitsOfArticle implements DigitsImpl{
     {
         this.tytle = "NO_TYTLE";
         this.listQualPapers = new int[5];
-        for(int i = 0; i < this.listQualPapers.length; i++)
-        {
-            listQualPapers[i] = 10;
-        }
+        // for(int i = 0; i < this.listQualPapers.length; i++)
+        // {
+        //     listQualPapers[i] = 10;
+        // }
         this.qualOfInfoPapers = 2; 
     }
-
 
     public int[] getList()
     {
         return listQualPapers;
     }
+    
     public void setList(int[] listQualPapers)
     {
         this.listQualPapers = listQualPapers;
     }
-
+    
+    public int getLen()
+    {
+        return listQualPapers.length;
+    }
+    
     public int getLenPaper(int index)
     {
         return listQualPapers[index];
     }
+   
     public void setLenPaper(int index, int value)
     {
-        if(value <= 0)
-        {
-            throw new RuntimeException("Значение не может быть <= 0");
-        }
-        if(value <= qualOfInfoPapers)
-        {
-            throw new RuntimeException("Значение не может быть <= " + qualOfInfoPapers);
-        }
+        // if(value <= 0)
+        // {
+        //     throw new RuntimeException("Значение не может быть <= 0");
+        // }
+        // if(value <= qualOfInfoPapers)
+        // {
+        //     throw new RuntimeException("Значение не может быть <= " + qualOfInfoPapers);
+        // }
         listQualPapers[index] = value;
     }
 
@@ -79,15 +84,22 @@ public class DigitsOfArticle implements DigitsImpl{
     {
         return this.tytle;
     }
+    
     public void setTytle(String tytle)
     {
         this.tytle = tytle;
     }
+    
     public String getType()
     {
         return type;
     }
-
+    
+    public int getQuallityOfInfPapers()
+    {
+        return qualOfInfoPapers;
+    }
+    
     public int getQuallityOfMainPages()
     {
         // Метод подсчитывает общее количество страниц без учета информационных
@@ -99,32 +111,51 @@ public class DigitsOfArticle implements DigitsImpl{
         return result;
     } 
 
-    public boolean equals(Object o){
-        if(o != null && o.getClass() == this.getClass())
-        {
-            DigitsOfArticle digitsOfArticle = (DigitsOfArticle)o;
-            if(this.getTytle() == digitsOfArticle.getTytle()
-            && this.getType() == digitsOfArticle.getType()
-            && this.getList().length == digitsOfArticle.getList().length
-            && this.getQuallityOfMainPages() == digitsOfArticle.getQuallityOfMainPages())
-            {
-                for(int i = 0; i < this.getList().length; i++){
-                    if(this.getLenPaper(i) != digitsOfArticle.getLenPaper(i))
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public int hashCode()
+    public void byteWriter(OutputStream out)
     {
-        return getList().hashCode() + getType().hashCode() + super.hashCode();
+        String toSaveLine = toString();
+        byte[] bytes = toSaveLine.getBytes();
+        try
+        {
+            for(byte eachByte: bytes)
+            {
+                out.write(eachByte);
+            }
+            for(int i = 0; i < 10; i++)
+            {
+                out.write((byte)'=');
+            }
+            out.write((byte)'\n');
+        }
+        catch(IOException exception)
+        {
+            System.out.println("Output error");
+        }
     }
 
+    public void symbolWriter(Writer out)
+    {
+        String toSaveLine = toString();
+        char[] chars = new char[toSaveLine.length()];
+        toSaveLine.getChars(0, chars.length, chars, 0);
+        try
+        {
+            for(char eachChar: chars)
+            {
+                out.write(eachChar);
+            }
+            for(int i = 0; i < 10; i++)
+            {
+                out.write('=');
+            }
+            out.write('\n');
+        }
+        catch(IOException exception)
+        {
+            System.out.println("Output error");
+        }
+    }
+    
     @Override
     public String toString()
     {
